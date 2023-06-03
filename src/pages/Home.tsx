@@ -41,9 +41,9 @@ const Content = styled.div`
 		line-height: 150%;
 		font-weight: 700;
 		margin-bottom: 48px;
+		text-transform: uppercase;
 		position: relative;
 		display: inline-block;
-		text-transform: uppercase;
 		&::after {
 			content: "";
 			width: 237px;

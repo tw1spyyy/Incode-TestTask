@@ -20,3 +20,19 @@ a {
 img {
 	object-fit: cover;
 }
+
+// input:-webkit-autofill,
+// input:-webkit-autofill:hover,
+// input:-webkit-autofill:focus,
+// input:-webkit-autofill:active {
+// 	-webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
+// 	-webkit-transition-delay: 9999s;
+// }
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+	transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+	background-color: transparent !important;
+	font-family: "Montserrat", sans-serif;
+}
