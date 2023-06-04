@@ -1,21 +1,21 @@
-import React from "react";
+import React, { RefObject, forwardRef } from "react";
 import styled from "styled-components";
-
-type inputType = "password" | "text";
+import { Ref } from "../../types/authTypes";
 
 interface Props {
 	labelText: string;
 	placeholder: string;
 }
 
-export const Input = ({ labelText, placeholder }: Props) => {
+export const Input = forwardRef((props: Props, ref: Ref) => {
+	const { labelText, placeholder, ...other } = props;
 	return (
 		<Wrapper>
 			{labelText}
-			<InputWrapper type="text" placeholder={placeholder} />
+			<InputWrapper ref={ref} type="text" placeholder={placeholder} {...other} />
 		</Wrapper>
 	);
-};
+});
 
 const Wrapper = styled.label`
 	height: 60px;

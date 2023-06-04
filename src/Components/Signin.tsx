@@ -1,25 +1,49 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Input } from "./UI/Input";
 import { PasswordInput } from "./UI/PasswordInput";
 import { Button } from "./UI/Button";
+import { signIn } from "../store/reducers/auth/action";
+import { useAppDispatch } from "../hooks/redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { ISignInData } from "../types/authTypes";
+import { DevTool } from "@hookform/devtools";
 
 interface Props {
 	setIsSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Signin = ({ setIsSignUpForm }: Props) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
-	useEffect(() => {}, []);
+	const validationSchema = Yup.object().shape({
+		username: Yup.string(),
+		password: Yup.string(),
+	});
+
+	const formOptions = { resolver: yupResolver(validationSchema) };
+	const {
+		register,
+		formState: { errors },
+		handleSubmit,
+	} = useForm<ISignInData>(formOptions);
+
+	useEffect(() => {
+		// dispatch(signIn({ username: "tw1spy", password: "12345678" }));
+	}, []);
+
+	const onSubmit = (data: ISignInData) => {
+		console.log(data);
+	};
 
 	return (
 		<Wrapper>
 			<h2>Sign In</h2>
-			<form>
-				<Input labelText="User Name" placeholder="Example123" />
-				<PasswordInput labelText="Password" placeholder="Your password" />
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<Input {...register("username")} labelText="User Name" placeholder="Example123" />
+				<PasswordInput {...register("password")} labelText="Password" placeholder="Your password" />
 				<Button>Sign In</Button>
 			</form>
 			<Switcher>

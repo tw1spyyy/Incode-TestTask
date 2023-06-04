@@ -1,22 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Input } from "./UI/Input";
+import { useForm } from "react-hook-form";
 import { PasswordInput } from "./UI/PasswordInput";
 import { Button } from "./UI/Button";
+import { useAppDispatch } from "../hooks/redux";
+import { signUp } from "../store/reducers/auth/action";
+import { ISingUpData } from "../types/authTypes";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 interface Props {
 	setIsSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Signup = ({ setIsSignUpForm }: Props) => {
+	const dispatch = useAppDispatch();
+
+	const validationSchema = Yup.object().shape({
+		username: Yup.string(),
+		displayName: Yup.string(),
+		password: Yup.string().required("err").min(8, "Password must be at least 6 characters"),
+		repeatPassword: Yup.string()
+			.required("err")
+			.oneOf([Yup.ref("password")], "Passwords must match"),
+	});
+
+	const formOptions = { resolver: yupResolver(validationSchema) };
+	const {
+		register,
+		formState: { errors },
+		handleSubmit,
+	} = useForm<ISingUpData>(formOptions);
+
+	useEffect(() => {}, []);
+
+	const onSubmit = (data: ISingUpData) => {
+		console.log(data);
+		dispatch(
+			signUp({ password: data.password, username: data.username, displayName: data.displayName })
+		);
+	};
+
 	return (
 		<Wrapper>
 			<h2>Sign Up</h2>
-			<form>
-				<Input labelText="Full Name" placeholder="Example Name" />
-				<Input labelText="User Name" placeholder="Example123" />
-				<PasswordInput labelText="Password" placeholder="Your password" />
-				<PasswordInput labelText="Confirm password" placeholder="Your password" />
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<Input {...register("username")} labelText="Full Name" placeholder="Example Name" />
+				<Input {...register("displayName")} labelText="User Name" placeholder="Example123" />
+				<PasswordInput {...register("password")} labelText="Password" placeholder="Your password" />
+				<PasswordInput
+					{...register("repeatPassword")}
+					labelText="Confirm password"
+					placeholder="Your password"
+				/>
 				<Button>Sign Up</Button>
 			</form>
 			<Switcher>

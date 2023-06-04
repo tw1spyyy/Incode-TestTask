@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import styled from "styled-components";
+import { Ref } from "../../types/authTypes";
 
 type inputType = "password" | "text";
 
@@ -8,16 +9,19 @@ interface Props {
 	placeholder: string;
 }
 
-export const PasswordInput = ({ labelText, placeholder }: Props) => {
+export const PasswordInput = forwardRef((props: Props, ref: Ref) => {
+	const { labelText, placeholder, ...other } = props;
 	const [isInputOpen, setIsInputOpen] = useState(false);
 
 	return (
 		<Wrapper>
 			{labelText}
 			<InputWrapper
+				ref={ref}
 				autoComplete="off"
 				type={isInputOpen ? "text" : "password"}
 				placeholder={placeholder}
+				{...other}
 			/>
 			{isInputOpen ? (
 				<svg
@@ -56,8 +60,7 @@ export const PasswordInput = ({ labelText, placeholder }: Props) => {
 			)}
 		</Wrapper>
 	);
-};
-
+});
 const Wrapper = styled.label`
 	height: 60px;
 	font-size: 14px;
