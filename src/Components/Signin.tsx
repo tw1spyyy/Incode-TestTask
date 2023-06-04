@@ -30,12 +30,10 @@ export const Signin = ({ setIsSignUpForm }: Props) => {
 		handleSubmit,
 	} = useForm<ISignInData>(formOptions);
 
-	useEffect(() => {
-		// dispatch(signIn({ username: "tw1spy", password: "12345678" }));
-	}, []);
+	useEffect(() => {}, []);
 
 	const onSubmit = (data: ISignInData) => {
-		console.log(data);
+		dispatch(signIn({ username: data.username, password: data.password }));
 	};
 
 	return (

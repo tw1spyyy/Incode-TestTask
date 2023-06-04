@@ -29,3 +29,10 @@ export type Ref =
 	| RefObject<HTMLInputElement>
 	| null
 	| undefined;
+
+export interface IRefreshData {
+	refreshToken: string;
+}
+export interface IRefreshResponse {
+	accessToken: string;
+}

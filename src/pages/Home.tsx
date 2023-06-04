@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { decor, homeImg, logo } from "../static";
+import { useAppDispatch } from "../hooks/redux";
+import { logout, signIn } from "../store/reducers/auth/action";
 
 export const Home = () => {
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		// dispatch(signIn({ username: "herasymchuk roman", password: "qwerty12345" }));
+	}, []);
+
 	const onLogoutClick = () => {
-		console.log("logout");
+		dispatch(logout());
 	};
 
 	return (

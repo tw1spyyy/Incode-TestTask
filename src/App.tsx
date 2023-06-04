@@ -1,18 +1,32 @@
-import React from "react";
-import styled from "styled-components";
-import { Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { AuthPage } from "./pages/AuthPage";
+import React, { useEffect } from "react";
+import { AppRouter } from "./Components/AppRouter";
+import { useAppDispatch, useAppSelector } from "./hooks/redux";
+import { setIsAuth, setUser } from "./store/reducers/auth";
+import { refreshToken } from "./store/reducers/auth/action";
 
 export const App = () => {
-	return (
-		<Wrapper>
-			<Routes>
-				<Route path="home" element={<Home />} />
-				<Route path="auth" element={<AuthPage />} />
-			</Routes>
-		</Wrapper>
-	);
-};
+	const dispatch = useAppDispatch();
 
-const Wrapper = styled.div``;
+	const { user, isAuth } = useAppSelector((state) => state.authData);
+
+	useEffect(() => {
+		const token = localStorage.getItem("refreshToken");
+		if (isAuth && token) {
+			dispatch(refreshToken({ refreshToken: token }));
+		}
+	}, [isAuth]);
+
+	useEffect(() => {
+		const userFromLocalStorage = JSON.parse(localStorage.getItem("user") || "{}");
+
+		if (!user) {
+			dispatch(setUser(userFromLocalStorage));
+		}
+
+		if (localStorage.getItem("token")) {
+			dispatch(setIsAuth(true));
+		}
+	}, [user, dispatch]);
+
+	return <AppRouter />;
+};

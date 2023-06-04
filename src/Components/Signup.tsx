@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { PasswordInput } from "./UI/PasswordInput";
 import { Button } from "./UI/Button";
 import { useAppDispatch } from "../hooks/redux";
-import { signUp } from "../store/reducers/auth/action";
+import { signIn, signUp } from "../store/reducers/auth/action";
 import { ISingUpData } from "../types/authTypes";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -35,11 +35,14 @@ export const Signup = ({ setIsSignUpForm }: Props) => {
 
 	useEffect(() => {}, []);
 
-	const onSubmit = (data: ISingUpData) => {
+	const onSubmit = async (data: ISingUpData) => {
 		console.log(data);
-		dispatch(
+		const response = await dispatch(
 			signUp({ password: data.password, username: data.username, displayName: data.displayName })
 		);
+		if (response.meta.requestStatus === "fulfilled") {
+			await dispatch(signIn({ username: data.username, password: data.password }));
+		}
 	};
 
 	return (

@@ -1,6 +1,8 @@
 import { api } from "../../../api/axiosInstance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+	IRefreshData,
+	IRefreshResponse,
 	ISignInData,
 	ISignInResponse,
 	ISignUpResponse,
@@ -44,6 +46,25 @@ export const signIn = createAsyncThunk<ISignInResponse, ISignInData, { rejectVal
 		}
 	}
 );
+export const refreshToken = createAsyncThunk<
+	IRefreshResponse,
+	IRefreshData,
+	{ rejectValue?: unknown }
+>("auth/refreshToken", async (refreshData, thunkAPI) => {
+	try {
+		const response = await api({
+			method: "POST",
+			url: `/auth/refresh`,
+			data: refreshData,
+		});
+
+		return response.data;
+	} catch (e: any) {
+		console.log(e);
+
+		return thunkAPI.rejectWithValue(e);
+	}
+});
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 	try {

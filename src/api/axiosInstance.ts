@@ -6,7 +6,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-	config.headers["X-AUTH-TOKEN"] = `${localStorage.getItem("token")}`;
+	config.headers["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
 
 	return config;
 });
