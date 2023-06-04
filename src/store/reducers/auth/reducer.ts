@@ -4,13 +4,15 @@ import { ISignUpResponse } from "../../../types/authTypes";
 
 interface IAuth {
 	isAuth: boolean;
-	isLoading: boolean;
+	signInError: string;
+	signUpError: string;
 	user: ISignUpResponse;
 }
 
 const initialState: IAuth = {
 	isAuth: false,
-	isLoading: false,
+	signInError: "",
+	signUpError: "",
 	user: {} as ISignUpResponse,
 };
 
@@ -29,17 +31,23 @@ const authData = createSlice({
 		builder
 			.addCase(signUp.fulfilled, (state, action) => {
 				state.isAuth = true;
-				// state.isLoading = false;
 				state.user = action.payload;
 				localStorage.setItem("user", JSON.stringify(action.payload));
+			})
+			.addCase(signUp.rejected, (state, action: any) => {
+				state.signUpError = action.payload.response.data.message;
 			})
 			.addCase(signIn.fulfilled, (state, action) => {
 				localStorage.setItem("token", action.payload.accessToken);
 				localStorage.setItem("refreshToken", action.payload.refreshToken);
 				state.isAuth = true;
 			})
+			.addCase(signIn.rejected, (state, action: any) => {
+				state.signInError = action.payload.response.data.message;
+			})
 			.addCase(logout.fulfilled, (state, action) => {
 				localStorage.removeItem("token");
+				localStorage.removeItem("refreshToken");
 				localStorage.removeItem("user");
 				state.isAuth = false;
 				state.user = {} as ISignUpResponse;

@@ -2,15 +2,14 @@ import React, { forwardRef, useState } from "react";
 import styled from "styled-components";
 import { Ref } from "../../types/authTypes";
 
-type inputType = "password" | "text";
-
 interface Props {
 	labelText: string;
 	placeholder: string;
+	errorText: string | undefined;
 }
 
 export const PasswordInput = forwardRef((props: Props, ref: Ref) => {
-	const { labelText, placeholder, ...other } = props;
+	const { labelText, errorText = "", placeholder, ...other } = props;
 	const [isInputOpen, setIsInputOpen] = useState(false);
 
 	return (
@@ -23,6 +22,11 @@ export const PasswordInput = forwardRef((props: Props, ref: Ref) => {
 				placeholder={placeholder}
 				{...other}
 			/>
+			{errorText && (
+				<ErrorWrapper>
+					<p>{errorText}</p>
+				</ErrorWrapper>
+			)}
 			{isInputOpen ? (
 				<svg
 					onClick={() => setIsInputOpen(false)}
@@ -66,6 +70,8 @@ const Wrapper = styled.label`
 	font-size: 14px;
 	font-weight: 400;
 	position: relative;
+	margin-bottom: 24px;
+	display: block;
 	& > svg {
 		position: absolute;
 		cursor: pointer;
@@ -76,7 +82,6 @@ const Wrapper = styled.label`
 
 const InputWrapper = styled.input`
 	background: transparent;
-	margin-bottom: 24px;
 	border: none;
 	outline: none;
 	width: 100%;
@@ -85,5 +90,16 @@ const InputWrapper = styled.input`
 	font-weight: 400;
 	&::placeholder {
 		color: rgba(255, 255, 255, 0.7);
+	}
+`;
+const ErrorWrapper = styled.div`
+	& > p {
+		font-size: 12px;
+		line-height: 16px;
+		margin-top: 6px;
+		color: #ef6666;
+		display: block;
+		margin-bottom: -10px;
+		width: 100%;
 	}
 `;

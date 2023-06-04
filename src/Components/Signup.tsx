@@ -4,7 +4,7 @@ import { Input } from "./UI/Input";
 import { useForm } from "react-hook-form";
 import { PasswordInput } from "./UI/PasswordInput";
 import { Button } from "./UI/Button";
-import { useAppDispatch } from "../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { signIn, signUp } from "../store/reducers/auth/action";
 import { ISingUpData } from "../types/authTypes";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,12 +17,16 @@ interface Props {
 export const Signup = ({ setIsSignUpForm }: Props) => {
 	const dispatch = useAppDispatch();
 
+	const { signUpError } = useAppSelector((state) => state.authData);
+
 	const validationSchema = Yup.object().shape({
-		username: Yup.string(),
-		displayName: Yup.string(),
-		password: Yup.string().required("err").min(8, "Password must be at least 6 characters"),
+		username: Yup.string().required("Enter your username"),
+		displayName: Yup.string().required("Enter your nickname"),
+		password: Yup.string()
+			.required("Enter your password")
+			.min(6, "Password must be at least 6 characters"),
 		repeatPassword: Yup.string()
-			.required("err")
+			.required("Repeat password")
 			.oneOf([Yup.ref("password")], "Passwords must match"),
 	});
 
@@ -49,15 +53,35 @@ export const Signup = ({ setIsSignUpForm }: Props) => {
 		<Wrapper>
 			<h2>Sign Up</h2>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<Input {...register("username")} labelText="Full Name" placeholder="Example Name" />
-				<Input {...register("displayName")} labelText="User Name" placeholder="Example123" />
-				<PasswordInput {...register("password")} labelText="Password" placeholder="Your password" />
+				<Input
+					errorText={errors?.username?.message}
+					{...register("username")}
+					labelText="Full Name"
+					placeholder="Example Name"
+				/>
+
+				<Input
+					errorText={errors?.displayName?.message}
+					{...register("displayName")}
+					labelText="User Name"
+					placeholder="Example123"
+				/>
 				<PasswordInput
+					errorText={errors?.password?.message}
+					{...register("password")}
+					labelText="Password"
+					placeholder="Your password"
+				/>
+				<PasswordInput
+					errorText={errors?.repeatPassword?.message}
 					{...register("repeatPassword")}
 					labelText="Confirm password"
 					placeholder="Your password"
 				/>
 				<Button>Sign Up</Button>
+				<ErrorWrapper>
+					<p>{signUpError}</p>
+				</ErrorWrapper>
 			</form>
 			<Switcher>
 				I have an account. <span onClick={() => setIsSignUpForm(false)}>Go to Sign in</span>
@@ -86,5 +110,17 @@ const Switcher = styled.div`
 		font-size: 12px;
 		color: #7faaf0;
 		cursor: pointer;
+	}
+`;
+const ErrorWrapper = styled.div`
+	text-align: center;
+	& > p {
+		font-size: 16px;
+		line-height: 20px;
+		margin-top: 10px;
+		color: #ef6666;
+		display: block;
+		margin-bottom: -10px;
+		width: 100%;
 	}
 `;

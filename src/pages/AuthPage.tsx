@@ -5,7 +5,7 @@ import { Signin } from "../Components/Signin";
 import { Signup } from "../Components/Signup";
 
 export const AuthPage = () => {
-	const [isSignUpForm, setIsSignUpForm] = useState(false);
+	const [isSignUpForm, setIsSignUpForm] = useState(true);
 	return (
 		<Wrapper>
 			<Logo src={logo} />

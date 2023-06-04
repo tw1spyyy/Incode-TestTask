@@ -5,11 +5,10 @@ import { Input } from "./UI/Input";
 import { PasswordInput } from "./UI/PasswordInput";
 import { Button } from "./UI/Button";
 import { signIn } from "../store/reducers/auth/action";
-import { useAppDispatch } from "../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ISignInData } from "../types/authTypes";
-import { DevTool } from "@hookform/devtools";
 
 interface Props {
 	setIsSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,9 +17,11 @@ interface Props {
 export const Signin = ({ setIsSignUpForm }: Props) => {
 	const dispatch = useAppDispatch();
 
+	const { signInError } = useAppSelector((state) => state.authData);
+
 	const validationSchema = Yup.object().shape({
-		username: Yup.string(),
-		password: Yup.string(),
+		username: Yup.string().required("Enter your login"),
+		password: Yup.string().required("Enter your password"),
 	});
 
 	const formOptions = { resolver: yupResolver(validationSchema) };
@@ -40,9 +41,22 @@ export const Signin = ({ setIsSignUpForm }: Props) => {
 		<Wrapper>
 			<h2>Sign In</h2>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<Input {...register("username")} labelText="User Name" placeholder="Example123" />
-				<PasswordInput {...register("password")} labelText="Password" placeholder="Your password" />
+				<Input
+					errorText={errors?.username?.message}
+					{...register("username")}
+					labelText="User Name"
+					placeholder="Example123"
+				/>
+				<PasswordInput
+					errorText={errors?.password?.message}
+					{...register("password")}
+					labelText="Password"
+					placeholder="Your password"
+				/>
 				<Button>Sign In</Button>
+				<ErrorWrapper>
+					<p>{signInError}</p>
+				</ErrorWrapper>
 			</form>
 			<Switcher>
 				Don’t have account yet? <span onClick={() => setIsSignUpForm(true)}>New Account</span>
@@ -72,5 +86,17 @@ const Switcher = styled.div`
 		font-size: 12px;
 		color: #7faaf0;
 		cursor: pointer;
+	}
+`;
+const ErrorWrapper = styled.div`
+	text-align: center;
+	& > p {
+		font-size: 16px;
+		line-height: 20px;
+		margin-top: 10px;
+		color: #ef6666;
+		display: block;
+		margin-bottom: -10px;
+		width: 100%;
 	}
 `;
