@@ -32,6 +32,7 @@ const authData = createSlice({
 			.addCase(signUp.fulfilled, (state, action) => {
 				state.isAuth = true;
 				state.user = action.payload;
+				state.signUpError = "";
 				localStorage.setItem("user", JSON.stringify(action.payload));
 			})
 			.addCase(signUp.rejected, (state, action: any) => {
@@ -40,12 +41,13 @@ const authData = createSlice({
 			.addCase(signIn.fulfilled, (state, action) => {
 				localStorage.setItem("token", action.payload.accessToken);
 				localStorage.setItem("refreshToken", action.payload.refreshToken);
+				state.signInError = "";
 				state.isAuth = true;
 			})
 			.addCase(signIn.rejected, (state, action: any) => {
 				state.signInError = action.payload.response.data.message;
 			})
-			.addCase(logout.fulfilled, (state, action) => {
+			.addCase(logout.fulfilled, (state) => {
 				localStorage.removeItem("token");
 				localStorage.removeItem("refreshToken");
 				localStorage.removeItem("user");

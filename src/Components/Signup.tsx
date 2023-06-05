@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { signIn, signUp } from "../store/reducers/auth/action";
 import { ISingUpData } from "../types/authTypes";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+import { validationSchema } from "../utils/validationChemas";
 
 interface Props {
 	setIsSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,17 +18,6 @@ export const Signup = ({ setIsSignUpForm }: Props) => {
 	const dispatch = useAppDispatch();
 
 	const { signUpError } = useAppSelector((state) => state.authData);
-
-	const validationSchema = Yup.object().shape({
-		username: Yup.string().required("Enter your username"),
-		displayName: Yup.string().required("Enter your nickname"),
-		password: Yup.string()
-			.required("Enter your password")
-			.min(6, "Password must be at least 6 characters"),
-		repeatPassword: Yup.string()
-			.required("Repeat password")
-			.oneOf([Yup.ref("password")], "Passwords must match"),
-	});
 
 	const formOptions = { resolver: yupResolver(validationSchema) };
 	const {

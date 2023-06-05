@@ -1,18 +1,15 @@
-import React, { useEffect } from "react";
 import styled from "styled-components";
 import { decor, homeImg, logo } from "../static";
 import { useAppDispatch } from "../hooks/redux";
-import { logout, signIn } from "../store/reducers/auth/action";
+import { logout, refreshToken } from "../store/reducers/auth/action";
 
 export const Home = () => {
 	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		// dispatch(signIn({ username: "herasymchuk roman", password: "qwerty12345" }));
-	}, []);
-
-	const onLogoutClick = () => {
-		dispatch(logout());
+	const onLogoutClick = async () => {
+		const token = localStorage.getItem("refreshToken");
+		if (token) await dispatch(refreshToken({ refreshToken: token }));
+		await dispatch(logout());
 	};
 
 	return (

@@ -7,8 +7,8 @@ import { Button } from "./UI/Button";
 import { signIn } from "../store/reducers/auth/action";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 import { ISignInData } from "../types/authTypes";
+import { validationSchemaSignIn } from "../utils/validationChemas";
 
 interface Props {
 	setIsSignUpForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,12 +19,7 @@ export const Signin = ({ setIsSignUpForm }: Props) => {
 
 	const { signInError } = useAppSelector((state) => state.authData);
 
-	const validationSchema = Yup.object().shape({
-		username: Yup.string().required("Enter your login"),
-		password: Yup.string().required("Enter your password"),
-	});
-
-	const formOptions = { resolver: yupResolver(validationSchema) };
+	const formOptions = { resolver: yupResolver(validationSchemaSignIn) };
 	const {
 		register,
 		formState: { errors },
