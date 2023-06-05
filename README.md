@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+##  🚀 Test task for the position of Junior Frontend Developer(React.js) in Incode Group
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Головним завданням є створення демо додатку, де користувач мав би змогу зареєструвати свій аккаунт за допомогою **Sign Up** форми та згодом увійти в нього через **Sign In** форму. Після успішного входу, користувача повинно автоматично перенаправити на сторінку **Home**, де в мабутньому він мав би змогу скористатися кнопкою *Logout* для виходу зі свого аккаунту.
 
-## Available Scripts
+<br>
 
-In the project directory, you can run:
+## 🛠 Technologies i used
 
-### `npm start`
+⚡️ **Основа**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- ```TypeScript```
+- ```React``` 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+⚡️ **State менеджер та middleware**
 
-### `npm test`
+- ```Redux Toolkit```
+- ```Redux Thunk```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+⚡️ **Роутінг**
 
-### `npm run build`
+- ```React Router```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+⚡️ **Робота із запитами**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- ```Axios```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+⚡️ **Обробка форм**
 
-### `npm run eject`
+- ```React Hook Form```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+⚡️ **Валідація форм**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- ```Yup```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+⚡️ **Стилізація**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- ```styled-component```
+- ```SASS/SCSS/LESS modules```
 
-## Learn More
+⚡️ **Валідація та форматування коду**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- ```ESLint``` 
+- ```Prettier```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 👩‍💻 Technical aspects
+
+Додаток складається з 2-х сторінок **Auth** та **Home**:
+
+* **Auth** сторінка повинна містити в собі **Sign Up** та **Sign In** форми, які динамічно перемикаються відоповідно до функціоналу.
+* **Home** сторінка повинна містити  в собі повідомлення про успішний вхід в додаток та кнопку *Logout*.
+
+In the test task, i paid attention to every little thing, starting from the validation of forms, the output of input errors and errors during requests, and ending with a redirect to our pages and refreshToken before logout
